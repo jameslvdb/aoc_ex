@@ -9,13 +9,23 @@ defmodule Year2022.Day01 do
   # Answer: How many total Calories is that Elf carrying?
 
   def part_1(input) do
-	# split by empty line
+    calories_per_elf(input)
+    |> Enum.max()
+  end
 
+  def part_2(input) do
+    calories_per_elf(input)
+    |> Enum.sort()
+    |> Enum.reverse()
+    |> Enum.take(3)
+    |> reduce_with_sum()
+  end
+
+  defp calories_per_elf(input) do
     input
     |> String.split("\n\n", trim: true)
     |> Enum.map(&split_and_convert/1)
     |> Enum.map(&reduce_with_sum/1)
-    |> Enum.max()
   end
 
   defp split_and_convert(str) do
