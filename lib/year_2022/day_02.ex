@@ -27,10 +27,8 @@ defmodule Year2022.Day02 do
     score_for_result(moves) + score_for_move(moves)
   end
 
-  # draw case
-  def score_for_result({move, move}) do
-    3
-  end
+
+  def score_for_result({move, move}), do: 3
 
   def score_for_result({elf_move, player_move}) do
     case {elf_move, player_move} do
