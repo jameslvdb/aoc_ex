@@ -4,7 +4,7 @@ defmodule Year2022.Day02Test do
   test "do something" do
     {:ok, input} = File.read("test/year_2022/day_02_test_input.txt")
 
-	assert Year2022.Day02.part_1(input) == 15
+    assert Year2022.Day02.part_1(input) == 15
   end
 
   test "score for result" do
@@ -38,12 +38,23 @@ defmodule Year2022.Day02Test do
     assert Year2022.Day02.total_round_score({:paper, :rock}) == 0 + 1
     assert Year2022.Day02.total_round_score({:scissors, :paper}) == 0 + 2
     assert Year2022.Day02.total_round_score({:rock, :scissors}) == 0 + 3
-
   end
 
   test "move mapping" do
     assert Year2022.Day02.get_moves(["A", "X"]) == {:rock, :rock}
     assert Year2022.Day02.get_moves(["B", "Y"]) == {:paper, :paper}
     assert Year2022.Day02.get_moves(["C", "Z"]) == {:scissors, :scissors}
+  end
+
+  test "get intended match result" do
+    assert Year2022.Day02.get_intended_result({:rock, "X"}) == {:rock, :loss}
+    assert Year2022.Day02.get_intended_result({:rock, "Y"}) == {:rock, :draw}
+    assert Year2022.Day02.get_intended_result({:rock, "Z"}) == {:rock, :win}
+  end
+
+  test "part 2" do
+    {:ok, input} = File.read("test/year_2022/day_02_test_input.txt")
+
+    assert Year2022.Day02.part_2(input) == 12
   end
 end
