@@ -1,4 +1,4 @@
-defmodule AdventOfCode.InputHelper do
+defmodule InputHelper do
   @moduledoc """
   Collects inputs from the correct file.
   """
