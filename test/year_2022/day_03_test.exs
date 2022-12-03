@@ -53,12 +53,12 @@ defmodule Year2022.Day03Test do
 
   test "find the common element in part 2" do
     assert Day03.part_2([
-      "vJrwpWtwJgWrhcsFMMfFFhFp",
-      "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
-      "PmmdzqPrVvPwwTWBwg",
-      "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
-      "ttgJtRGJQctTZtZT",
-      "CrZsJsPPZsGzwwsLwLmpwMDw"
-    ]) == 70
+             "vJrwpWtwJgWrhcsFMMfFFhFp",
+             "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
+             "PmmdzqPrVvPwwTWBwg",
+             "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
+             "ttgJtRGJQctTZtZT",
+             "CrZsJsPPZsGzwwsLwLmpwMDw"
+           ]) == 70
   end
 end

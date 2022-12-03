@@ -64,4 +64,4 @@ defmodule Year2022.Day03 do
   defp split_lines(input) do
     String.split(input, "\n", trim: true)
   end
- end
+end
