@@ -42,8 +42,9 @@ defmodule Year2022.Day05Test do
     # Perform the move on the stacks array
     # Bind stacks to the result
 
-    parsed_moves = Enum.map(moves, &Day05.build_move/1)
-    |> dbg()
+    parsed_moves =
+      Enum.map(moves, &Day05.build_move/1)
+      |> dbg()
 
     Enum.reduce(parsed_moves, stacks, fn move, acc -> Day05.perform_move(move, acc) end)
     |> Enum.map(&hd/1)

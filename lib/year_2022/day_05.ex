@@ -7,8 +7,9 @@ defmodule Year2022.Day05 do
 
   def part_1(lines) do
     # create data structure to represent state of crates
-    stacks = take_crate_lines(lines)
-    |> build_stacks()
+    stacks =
+      take_crate_lines(lines)
+      |> build_stacks()
 
     take_move_lines(lines)
     |> Enum.reject(fn x -> x == "" || x == nil end)
@@ -41,6 +42,7 @@ defmodule Year2022.Day05 do
 
   def build_move(line) do
     IO.puts("Line: #{line}")
+
     [count, from, to] =
       Regex.scan(~r/\d+/, line)
       |> List.flatten()
