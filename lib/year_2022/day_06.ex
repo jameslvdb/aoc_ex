@@ -13,9 +13,9 @@ defmodule Year2022.Day06 do
 
     Enum.reduce_while(range, 0, fn i, _acc ->
       if next_elements(chars, i, num_uniq_chars) == num_uniq_chars,
-        do: {:halt, i},
+        do: {:halt, i + num_uniq_chars},
         else: {:cont, 0}
-    end) + num_uniq_chars
+    end)
   end
 
   def next_elements(chars, index, count) do
