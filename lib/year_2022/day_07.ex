@@ -27,7 +27,12 @@ defmodule Year2022.Day07 do
         |> build_directory_contents()
         |> dbg()
 
+      content_size =
+        Enum.map(contents, fn x -> x.size end)
+        |> Enum.sum()
+
       Map.put(dir, :contents, contents)
+      |> Map.put(:size, content_size)
     else
       build_file(child_str)
     end

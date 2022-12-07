@@ -115,6 +115,7 @@ defmodule Year2022.Day07Test do
                %{
                  type: :directory,
                  name: "z",
+                 size: 4734,
                  contents: [
                    %{type: :file, name: "y", size: 4734}
                  ]
@@ -138,14 +139,17 @@ defmodule Year2022.Day07Test do
     assert Day07.part_1(test_input) == %{
              type: :directory,
              name: "/",
+             size: 25_028_595,
              contents: [
                %{
                  type: :directory,
                  name: "a",
+                 size: 94853,
                  contents: [
                    %{
                      type: :directory,
                      name: "e",
+                     size: 584,
                      contents: [
                        %{type: :file, name: "i", size: 584}
                      ]
@@ -160,6 +164,7 @@ defmodule Year2022.Day07Test do
                %{
                  type: :directory,
                  name: "d",
+                 size: 24_933_642,
                  contents: [
                    %{type: :file, name: "j", size: 4_060_174},
                    %{type: :file, name: "d.log", size: 8_033_020},
