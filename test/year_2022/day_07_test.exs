@@ -2,77 +2,6 @@ defmodule Year2022.Day07Test do
   use ExUnit.Case
   alias Year2022.Day07
 
-  describe "item sizes" do
-    test "no nested directories" do
-      directory = %{
-        type: :directory,
-        name: "d",
-        contents: [
-          %{type: :file, name: "j", size: 4_060_174},
-          %{type: :file, name: "d.log", size: 8_033_020},
-          %{type: :file, name: "d.ext", size: 5_626_152},
-          %{type: :file, name: "k", size: 7_214_296}
-        ]
-      }
-
-      assert Day07.directory_size(directory).size == 24_933_642
-    end
-
-    test "with a nested directory" do
-      directory = %{
-        type: :directory,
-        name: "d",
-        contents: [
-          %{type: :file, name: "j", size: 1},
-          %{type: :file, name: "d.log", size: 2},
-          %{type: :file, name: "d.ext", size: 3},
-          %{type: :file, name: "k", size: 4},
-          %{
-            type: :directory,
-            name: "x",
-            contents: [
-              %{type: :file, name: "y", size: 5},
-              %{type: :file, name: "z", size: 6}
-            ]
-          }
-        ]
-      }
-
-      assert Day07.directory_size(directory).size == Enum.sum(1..6)
-      nested_directory = Enum.at(Day07.directory_size(directory).contents, -1)
-      assert nested_directory.size == 11
-      Day07.directory_size(directory) |> dbg()
-    end
-  end
-
-  test "get directory name" do
-    assert Day07.get_directory_name("$ cd abc") == "abc"
-    assert Day07.get_directory_name("$ cd gienoceiw") == "gienoceiw"
-  end
-
-  test "builds directory" do
-    input = [
-      "$ cd d",
-      "$ ls",
-      "4060174 j",
-      "8033020 d.log",
-      "5626152 d.ext",
-      "7214296 k",
-      "$ cd .."
-    ]
-
-    assert Day07.build_directory(input) == %{
-             type: :directory,
-             name: "d",
-             contents: [
-               %{type: :file, name: "j", size: 4_060_174},
-               %{type: :file, name: "d.log", size: 8_033_020},
-               %{type: :file, name: "d.ext", size: 5_626_152},
-               %{type: :file, name: "k", size: 7_214_296}
-             ]
-           }
-  end
-
   describe "builds directory contents" do
     test "with only files" do
       input = [
@@ -139,7 +68,6 @@ defmodule Year2022.Day07Test do
     assert Day07.part_1(test_input) == %{
              type: :directory,
              name: "/",
-             size: 25_028_595,
              contents: [
                %{
                  type: :directory,

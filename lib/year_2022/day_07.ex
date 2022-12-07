@@ -47,37 +47,6 @@ defmodule Year2022.Day07 do
     index = Enum.find_index(input, fn x -> x == "$ cd #{name}" end)
     Enum.drop(input, index)
   end
-
-  def directory_size(%{type: :directory, name: _, contents: contents} = input) do
-    size =
-      Enum.map(contents, &item_size/1)
-      |> Enum.map(fn {_, x} -> x end)
-      |> Enum.sum()
-
-    Map.put(input, :size, size)
-  end
-
-  def item_size(%{type: :file} = file), do: {:ok, file.size}
-
-  def item_size(%{type: :directory, contents: _contents} = input) do
-    dir_with_size = directory_size(input)
-
-    {dir_with_size, dir_with_size.size}
-  end
-
-  def build_directory(input) do
-    [cd_command, "$ ls" | _tail] = input
-
-    %{
-      type: :directory,
-      name: get_directory_name(cd_command),
-      contents: build_directory_contents(input)
-    }
-  end
-
-  def get_directory_name(cd_command) do
-    String.trim(cd_command, "$ cd ")
-  end
 end
 
 # Represent these as Maps:
