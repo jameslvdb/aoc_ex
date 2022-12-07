@@ -1,22 +1,13 @@
 defmodule Year2022.Day07 do
-  def part_1(["$ cd /", "$ ls" | tail]) do
+  def full_part_1() do
+    InputHelper.input_for(2022, 7)
+    |> String.split("\n", trim: true)
+  end
+
+  def part_1(["$ cd /", "$ ls" | _tail] = input) do
     %{
       type: :directory,
       name: "/",
-      contents: build_directory_contents(["$ cd /", "$ ls" | tail])
-    }
-  end
-
-  def directory_size(%{type: :directory, name: _, contents: contents}) do
-    Enum.reduce(contents, 0, fn file, acc -> acc + file.size end)
-  end
-
-  def build_directory(input) do
-    [cd_command, "$ ls" | _tail] = input
-
-    %{
-      type: :directory,
-      name: get_directory_name(cd_command),
       contents: build_directory_contents(input)
     }
   end
@@ -34,6 +25,7 @@ defmodule Year2022.Day07 do
         dir
         |> child_dir_input(input)
         |> build_directory_contents()
+        |> dbg()
 
       Map.put(dir, :contents, contents)
     else
@@ -46,13 +38,40 @@ defmodule Year2022.Day07 do
     %{type: :file, name: name, size: String.to_integer(size)}
   end
 
-  def get_directory_name(cd_command) do
-    String.trim(cd_command, "$ cd ")
-  end
-
   def child_dir_input(%{type: :directory, name: name}, input) do
     index = Enum.find_index(input, fn x -> x == "$ cd #{name}" end)
     Enum.drop(input, index)
+  end
+
+  def directory_size(%{type: :directory, name: _, contents: contents} = input) do
+    size =
+      Enum.map(contents, &item_size/1)
+      |> Enum.map(fn {_, x} -> x end)
+      |> Enum.sum()
+
+    Map.put(input, :size, size)
+  end
+
+  def item_size(%{type: :file} = file), do: {:ok, file.size}
+
+  def item_size(%{type: :directory, contents: _contents} = input) do
+    dir_with_size = directory_size(input)
+
+    {dir_with_size, dir_with_size.size}
+  end
+
+  def build_directory(input) do
+    [cd_command, "$ ls" | _tail] = input
+
+    %{
+      type: :directory,
+      name: get_directory_name(cd_command),
+      contents: build_directory_contents(input)
+    }
+  end
+
+  def get_directory_name(cd_command) do
+    String.trim(cd_command, "$ cd ")
   end
 end
 

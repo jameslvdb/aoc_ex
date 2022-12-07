@@ -2,19 +2,47 @@ defmodule Year2022.Day07Test do
   use ExUnit.Case
   alias Year2022.Day07
 
-  test "find directory size" do
-    directory = %{
-      type: :directory,
-      name: "d",
-      contents: [
-        %{type: :file, name: "j", size: 4_060_174},
-        %{type: :file, name: "d.log", size: 8_033_020},
-        %{type: :file, name: "d.ext", size: 5_626_152},
-        %{type: :file, name: "k", size: 7_214_296}
-      ]
-    }
+  describe "item sizes" do
+    test "no nested directories" do
+      directory = %{
+        type: :directory,
+        name: "d",
+        contents: [
+          %{type: :file, name: "j", size: 4_060_174},
+          %{type: :file, name: "d.log", size: 8_033_020},
+          %{type: :file, name: "d.ext", size: 5_626_152},
+          %{type: :file, name: "k", size: 7_214_296}
+        ]
+      }
 
-    assert Day07.directory_size(directory) == 24_933_642
+      assert Day07.directory_size(directory).size == 24_933_642
+    end
+
+    test "with a nested directory" do
+      directory = %{
+        type: :directory,
+        name: "d",
+        contents: [
+          %{type: :file, name: "j", size: 1},
+          %{type: :file, name: "d.log", size: 2},
+          %{type: :file, name: "d.ext", size: 3},
+          %{type: :file, name: "k", size: 4},
+          %{
+            type: :directory,
+            name: "x",
+            contents: [
+              %{type: :file, name: "y", size: 5},
+              %{type: :file, name: "z", size: 6}
+            ]
+          }
+        ]
+      }
+
+      assert Day07.directory_size(directory).size == Enum.sum(1..6)
+      nested_directory = Enum.at(Day07.directory_size(directory).contents, -1)
+      assert nested_directory.size == 11
+      Day07.directory_size(directory) |> dbg()
+    end
   end
 
   test "get directory name" do
