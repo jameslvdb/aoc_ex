@@ -2,106 +2,155 @@ defmodule Year2022.Day07Test do
   use ExUnit.Case
   alias Year2022.Day07
 
-  describe "builds directory contents" do
-    test "with only files" do
+  test "locations" do
+    Day07.add_current_dir_to_lines(test_input())
+  end
+
+  describe "new build file tree" do
+    test "base root case" do
       input = [
-        "$ cd d",
+        "$ cd /",
         "$ ls",
-        "4060174 j",
-        "8033020 d.log",
-        "5626152 d.ext",
-        "7214296 k",
-        "$ cd .."
+        "100 a",
+        "200 b"
       ]
 
-      assert Day07.build_directory_contents(input) == [
-               %{type: :file, name: "j", size: 4_060_174},
-               %{type: :file, name: "d.log", size: 8_033_020},
-               %{type: :file, name: "d.ext", size: 5_626_152},
-               %{type: :file, name: "k", size: 7_214_296}
-             ]
+      assert Day07.new_build_file_tree(input) == %{
+               type: :directory,
+               name: "/",
+               size: 300,
+               contents: [
+                 %{type: :file, name: "a", size: 100},
+                 %{type: :file, name: "b", size: 200}
+               ]
+             }
     end
 
-    test "with a child directory" do
+    test "one file and one dir" do
       input = [
-        "$ cd d",
+        "$ cd /",
         "$ ls",
-        "4060174 j",
-        "8033020 d.log",
-        "5626152 d.ext",
-        "7214296 k",
+        "100 a",
         "dir z",
         "$ cd z",
         "$ ls",
-        "4734 y"
+        "500 jlv"
       ]
 
-      assert Day07.build_directory_contents(input) == [
-               %{type: :file, name: "j", size: 4_060_174},
-               %{type: :file, name: "d.log", size: 8_033_020},
-               %{type: :file, name: "d.ext", size: 5_626_152},
-               %{type: :file, name: "k", size: 7_214_296},
-               %{
-                 type: :directory,
-                 name: "z",
-                 size: 4734,
-                 contents: [
-                   %{type: :file, name: "y", size: 4734}
-                 ]
-               }
-             ]
+      assert Day07.new_build_file_tree(input) == %{
+               type: :directory,
+               name: "/",
+               size: 600,
+               contents: [
+                 %{type: :file, name: "a", size: 100},
+                 %{
+                   type: :directory,
+                   name: "z",
+                   size: 500,
+                   contents: [
+                     %{type: :file, name: "jlv", size: 500}
+                   ]
+                 }
+               ]
+             }
     end
-  end
 
-  test "child dir input" do
-    assert Day07.child_dir_input(%{type: :directory, name: "d"}, test_input) == [
-             "$ cd d",
-             "$ ls",
-             "4060174 j",
-             "8033020 d.log",
-             "5626152 d.ext",
-             "7214296 k"
-           ]
-  end
+    test "one file and multiple dirs" do
+      input = [
+        "$ cd /",
+        "$ ls",
+        "dir y",
+        "100 a",
+        "dir z",
+        "$ cd y",
+        "$ ls",
+        "1000 y.txt",
+        "$ cd ..",
+        "$ cd z",
+        "$ ls",
+        "500 jlv"
+      ]
 
-  test "test input" do
-    assert Day07.part_1(test_input) == %{
-             type: :directory,
-             name: "/",
-             contents: [
-               %{
-                 type: :directory,
-                 name: "a",
-                 size: 94853,
-                 contents: [
-                   %{
-                     type: :directory,
-                     name: "e",
-                     size: 584,
-                     contents: [
-                       %{type: :file, name: "i", size: 584}
-                     ]
-                   },
-                   %{type: :file, name: "f", size: 29116},
-                   %{type: :file, name: "g", size: 2557},
-                   %{type: :file, name: "h.lst", size: 62596}
-                 ]
-               },
-               %{type: :file, name: "b.txt", size: 14_848_514},
-               %{type: :file, name: "c.dat", size: 8_504_156},
-               %{
-                 type: :directory,
-                 name: "d",
-                 size: 24_933_642,
-                 contents: [
-                   %{type: :file, name: "j", size: 4_060_174},
-                   %{type: :file, name: "d.log", size: 8_033_020},
-                   %{type: :file, name: "d.ext", size: 5_626_152},
-                   %{type: :file, name: "k", size: 7_214_296}
-                 ]
-               }
-             ]
-           }
+      assert Day07.new_build_file_tree(input) == %{
+               type: :directory,
+               name: "/",
+               size: 1600,
+               contents: [
+                 %{
+                   type: :directory,
+                   name: "y",
+                   size: 1000,
+                   contents: [
+                     %{type: :file, name: "y.txt", size: 1000}
+                   ]
+                 },
+                 %{type: :file, name: "a", size: 100},
+                 %{
+                   type: :directory,
+                   name: "z",
+                   size: 500,
+                   contents: [
+                     %{type: :file, name: "jlv", size: 500}
+                   ]
+                 }
+               ]
+             }
+    end
+
+    test "the problem child" do
+      input = [
+        "$ cd /",
+        "$ ls",
+        "dir foo",
+        "dir bar",
+        "100 a",
+        "$ cd foo",
+        "$ ls",
+        "dir bar",
+        "1000 y.txt",
+        "$ cd bar",
+        "$ ls",
+        "5000 nested.txt",
+        "$ cd ..",
+        "$ cd ..",
+        "$ cd bar",
+        "$ ls",
+        "500 jlv"
+      ]
+
+      assert Day07.new_build_file_tree(input) == %{
+               type: :directory,
+               name: "/",
+               size: 6600,
+               contents: [
+                 %{
+                   type: :directory,
+                   name: "foo",
+                   size: 6000,
+                   contents: [
+                     %{
+                       type: :directory,
+                       name: "bar",
+                       size: 5000,
+                       contents: [
+                         %{type: :file, name: "nested.txt", size: 5000}
+                       ]
+                     },
+                     %{type: :file, name: "y.txt", size: 1000}
+                   ]
+                 },
+                 %{
+                   type: :directory,
+                   name: "bar",
+                   size: 500,
+                   contents: [
+                     %{type: :file, name: "jlv", size: 500}
+                   ]
+                 },
+                 %{type: :file, name: "a", size: 100}
+               ]
+             }
+    end
   end
 
   def test_input() do
@@ -121,6 +170,12 @@ defmodule Year2022.Day07Test do
       "$ cd e",
       "$ ls",
       "584 i",
+      "dir zz",
+      "$ cd zz",
+      "$ ls",
+      "5 aa",
+      "15 bb",
+      "$ cd ..",
       "$ cd ..",
       "$ cd ..",
       "$ cd d",

@@ -1,51 +1,133 @@
 defmodule Year2022.Day07 do
+  @doc """
+  Read puzzle input from txt file and call part_1/1.
+  """
   def full_part_1() do
     InputHelper.input_for(2022, 7)
-    |> String.split("\n", trim: true)
+    |> String.split("\n")
+    |> part_1()
   end
 
   def part_1(["$ cd /", "$ ls" | _tail] = input) do
-    %{
+    new_build_file_tree(input)
+    |> get_small_dirs()
+  end
+
+  def new_build_file_tree(lines) do
+    lines_with_dirs = add_current_dir_to_lines(lines)
+
+    initial_tree = %{
       type: :directory,
       name: "/",
-      contents: build_directory_contents(input)
+      contents: contents_for_dir(["/"], lines_with_dirs)
     }
+
+    Map.put(initial_tree, :size, get_dir_size(initial_tree))
   end
 
-  def build_directory_contents([_cd_command, "$ ls" | tail]) do
-    Enum.take_while(tail, fn x -> !String.starts_with?(x, "$") end)
-    |> Enum.map(fn x -> build_child(x, tail) end)
+  @doc """
+  Return a List of all lines where the line's location matches the given location.
+  """
+  def contents_for_dir(location, lines) do
+    Enum.filter(lines, fn {loc, _line} ->
+      loc == location
+    end)
+    |> parse_dir_contents(lines)
   end
 
-  def build_child(child_str, input) do
-    if String.starts_with?(child_str, "dir") do
-      dir = %{type: :directory, name: String.trim(child_str, "dir ")}
+  def parse_dir_contents(dir_lines, original_lines) do
+    Enum.reject(dir_lines, fn {_loc, line} -> String.starts_with?(line, "$") end)
+    |> Enum.map(fn x -> build_line(x, original_lines) end)
+  end
 
-      contents =
-        dir
-        |> child_dir_input(input)
-        |> build_directory_contents()
-        |> dbg()
+  def build_line({location, line}, original_lines) do
+    cond do
+      String.starts_with?(line, "dir") ->
+        # build directory, recur
+        new_dir_name =
+          String.split(line)
+          |> Enum.at(-1)
 
-      content_size =
-        Enum.map(contents, fn x -> x.size end)
-        |> Enum.sum()
+        new_location = location ++ [new_dir_name]
 
-      Map.put(dir, :contents, contents)
-      |> Map.put(:size, content_size)
-    else
-      build_file(child_str)
+        dir = %{
+          type: :directory,
+          name: new_dir_name,
+          contents: contents_for_dir(new_location, original_lines)
+        }
+
+        Map.put(dir, :size, get_dir_size(dir))
+
+      String.starts_with?(line, "$") ->
+        nil
+
+      true ->
+        build_file(line)
     end
   end
 
+  def get_dir_size(dir) do
+	Enum.reduce(dir.contents, 0, fn x, acc -> x.size + acc end)
+  end
+
+  def get_small_dirs(file_tree) do
+    directory_sizes(file_tree)
+    |> List.flatten()
+    |> Enum.reject(fn x -> x > 100_000 end)
+    |> Enum.sort()
+    |> Enum.sum()
+    |> dbg()
+  end
+
+  def add_current_dir_to_lines(lines) do
+    {lines, _} =
+      Enum.map_reduce(lines, [], fn line, location -> track_location(line, location) end)
+
+    Enum.map(lines, fn [dir, line] ->
+      dir_str = Enum.reverse(dir)
+      {dir_str, line}
+    end)
+  end
+
+  def directory_sizes([]), do: []
+
+  def directory_sizes(%{type: :directory, name: "/", contents: _} = file_tree) do
+    [file_tree.size] ++ directory_sizes(file_tree.contents)
+  end
+
+  def directory_sizes(contents) do
+    dirs = filter_directories(contents)
+    new_contents = Enum.map(dirs, fn x -> x.contents end)
+
+    sizes = Enum.map(dirs, fn x -> x.size end)
+
+    sizes ++ Enum.map(new_contents, &directory_sizes/1)
+  end
+
+  defp filter_directories(list) do
+    Enum.filter(list, fn x -> x.type == :directory end)
+  end
+
+  # this makes sense
   def build_file(file_str) do
     [size, name] = String.split(file_str)
     %{type: :file, name: name, size: String.to_integer(size)}
   end
 
-  def child_dir_input(%{type: :directory, name: name}, input) do
-    index = Enum.find_index(input, fn x -> x == "$ cd #{name}" end)
-    Enum.drop(input, index)
+  def track_location(line, location) do
+    # location defaults to []
+    cond do
+      line == "$ cd .." ->
+        new_loc = Enum.drop(location, 1)
+        {[new_loc, line], new_loc}
+
+      String.starts_with?(line, "$ cd") ->
+        new_loc = [Enum.at(String.split(line), -1) | location]
+        {[new_loc, line], new_loc}
+
+      true ->
+        {[location, line], location}
+    end
   end
 end
 
