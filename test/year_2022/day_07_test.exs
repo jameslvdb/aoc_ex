@@ -153,6 +153,12 @@ defmodule Year2022.Day07Test do
     end
   end
 
+  describe "part 2" do
+	test "the smallest dir we can delete" do
+	  assert Day07.part_2(test_input()) == 24933642
+    end
+  end
+
   def test_input() do
     [
       "$ cd /",
@@ -170,12 +176,6 @@ defmodule Year2022.Day07Test do
       "$ cd e",
       "$ ls",
       "584 i",
-      "dir zz",
-      "$ cd zz",
-      "$ ls",
-      "5 aa",
-      "15 bb",
-      "$ cd ..",
       "$ cd ..",
       "$ cd ..",
       "$ cd d",

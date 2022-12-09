@@ -13,6 +13,29 @@ defmodule Year2022.Day07 do
     |> get_small_dirs()
   end
 
+  def full_part_2() do
+    InputHelper.input_for(2022, 7)
+    |> String.split("\n")
+    |> part_2()
+  end
+
+  def part_2(lines) do
+    total_disk_space = 70_000_000
+    required_disk_space = 30_000_000
+
+    sorted_dir_sizes =
+      new_build_file_tree(lines)
+      |> directory_sizes()
+      |> List.flatten()
+      |> Enum.sort()
+      |> Enum.reverse()
+
+    free_disk_space = total_disk_space - hd(sorted_dir_sizes)
+    need_to_free = required_disk_space - free_disk_space
+
+    Enum.find(Enum.reverse(sorted_dir_sizes), fn x -> x > need_to_free end)
+  end
+
   def new_build_file_tree(lines) do
     lines_with_dirs = add_current_dir_to_lines(lines)
 
@@ -67,7 +90,7 @@ defmodule Year2022.Day07 do
   end
 
   def get_dir_size(dir) do
-	Enum.reduce(dir.contents, 0, fn x, acc -> x.size + acc end)
+    Enum.reduce(dir.contents, 0, fn x, acc -> x.size + acc end)
   end
 
   def get_small_dirs(file_tree) do
