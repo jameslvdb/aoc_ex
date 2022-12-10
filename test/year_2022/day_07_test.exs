@@ -154,8 +154,8 @@ defmodule Year2022.Day07Test do
   end
 
   describe "part 2" do
-	test "the smallest dir we can delete" do
-	  assert Day07.part_2(test_input()) == 24933642
+    test "the smallest dir we can delete" do
+      assert Day07.part_2(test_input()) == 24_933_642
     end
   end
 

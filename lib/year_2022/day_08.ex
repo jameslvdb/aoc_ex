@@ -73,13 +73,9 @@ defmodule Year2022.Day08 do
   def scenic_scores_for_matrix(matrix) do
     transposed_trees = transpose(matrix)
 
-    scores =
-      Enum.map(matrix, &scenic_scores_for_line/1)
-      |> dbg()
+    scores = Enum.map(matrix, &scenic_scores_for_line/1)
 
-    transposed_scores =
-      Enum.map(transposed_trees, &scenic_scores_for_line/1)
-      |> dbg()
+    transposed_scores = Enum.map(transposed_trees, &scenic_scores_for_line/1)
 
     Enum.map(0..(length(scores) - 1), fn i ->
       Enum.zip(Enum.at(transpose(scores), i), Enum.at(transposed_scores, i))
@@ -87,7 +83,6 @@ defmodule Year2022.Day08 do
       |> Enum.map(&List.flatten/1)
       |> Enum.map(fn list -> Enum.reduce(list, fn x, acc -> x * acc end) end)
     end)
-    |> dbg()
   end
 
   def scenic_scores_for_line(line) do
@@ -104,7 +99,7 @@ defmodule Year2022.Day08 do
   def scenic_score(line, pos) do
     {left, tree, right} = split_around(line, pos)
 
-    [ scenic_score_side(Enum.reverse(left), tree), scenic_score_side(right, tree) ]
+    [scenic_score_side(Enum.reverse(left), tree), scenic_score_side(right, tree)]
   end
 
   defp scenic_score_side([], _), do: 0

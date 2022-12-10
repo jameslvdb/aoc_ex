@@ -4,7 +4,7 @@ defmodule Year2022.Day09 do
     |> String.split("\n")
     |> part_1()
   end
-  
+
   def part_1(lines) do
     data = %{
       coords: %{
@@ -14,11 +14,12 @@ defmodule Year2022.Day09 do
       visited: MapSet.new([%{x: 0, y: 0}])
     }
 
-    result = Enum.map(lines, fn line ->
-      [direction, steps] = String.split(line)
-      [direction, String.to_integer(steps)]
-    end)
-    |> Enum.reduce(data, fn line, acc -> process_move(acc, line) end)
+    result =
+      Enum.map(lines, fn line ->
+        [direction, steps] = String.split(line)
+        [direction, String.to_integer(steps)]
+      end)
+      |> Enum.reduce(data, fn line, acc -> process_move(acc, line) end)
 
     Enum.count(result.visited)
   end
