@@ -53,7 +53,7 @@ defmodule Year2022.Day09 do
   end
 
   def check_tail(data, move_direction) do
-    if move_tail?(data.coords.head, data.coords.tail, move_direction) do
+    if move_tail?(data.coords.head, data.coords.tail) do
       update_tail(data, move_direction)
     else
       data
@@ -92,7 +92,7 @@ defmodule Year2022.Day09 do
     put_in(data.visited, MapSet.put(data.visited, new_tail))
   end
 
-  def move_tail?(head_coords, tail_coords, last_move) do
+  def move_tail?(head_coords, tail_coords) do
     x_diff = abs(head_coords.x - tail_coords.x)
     y_diff = abs(head_coords.y - tail_coords.y)
     distance = Enum.max([x_diff, y_diff])
