@@ -43,7 +43,7 @@ defmodule Year2022.Day10 do
     |> Enum.reverse()
     |> Enum.chunk_every(40)
     |> Enum.map(&Enum.join/1)
-    |> Enum.map(&IO.inspect/1)
+    |> Enum.map(&IO.puts/1)
   end
 
   def draw?(cycle, value) do
