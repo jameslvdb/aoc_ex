@@ -29,4 +29,27 @@ defmodule Year2022.Day10Test do
 	  assert Day10.process_line([5, 2, -3], "addx 4") == [9, 5, 5, 2, -3]
     end
   end
+
+  test "part 2 test case" do
+	lines = File.read!("test/year_2022/day_10_test_input.txt")
+    |> String.trim()
+    |> String.split("\n")
+
+    Day10.part_2(lines) |> dbg()
+  end
+
+  describe "draw pixel" do
+	test "same number" do
+	  assert Day10.draw?(10, 10) == true
+    end
+
+    test "valid number, but not the same" do
+      assert Day10.draw?(10, 9) == true
+      assert Day10.draw?(0, 1) == true
+    end
+
+    test "different numbers" do
+	  assert Day10.draw?(1, 15) == false
+    end
+  end
 end
