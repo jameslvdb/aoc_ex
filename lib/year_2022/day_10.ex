@@ -35,21 +35,15 @@ defmodule Year2022.Day10 do
   end
 
   def draw_picture(register_values) do
-    chunks = Enum.chunk_every(register_values, 40)
-
-    Enum.reduce(0..5, [], fn chunk, screen_lines ->
-      [draw_line(Enum.at(chunks, chunk)) | screen_lines]
+    Enum.reduce(0..239, [], fn pos, screen ->
+      if draw?(rem(pos, 40), Enum.at(register_values, pos)),
+        do: ["#" | screen],
+        else: ["." | screen]
     end)
     |> Enum.reverse()
+    |> Enum.chunk_every(40)
+    |> Enum.map(&Enum.join/1)
     |> Enum.map(&IO.inspect/1)
-  end
-
-  def draw_line(chunk) do
-    Enum.reduce(0..39, [], fn pos, screen_line ->
-      if draw?(pos, Enum.at(chunk, pos)), do: ["#" | screen_line], else: ["." | screen_line]
-    end)
-    |> Enum.reverse()
-    |> Enum.join()
   end
 
   def draw?(cycle, value) do
