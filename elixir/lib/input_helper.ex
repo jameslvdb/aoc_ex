@@ -17,6 +17,6 @@ defmodule InputHelper do
       |> Integer.to_string()
       |> String.pad_leading(2, "0")
 
-    "inputs/year_#{year}/day_#{day_val}.txt"
+    "../inputs/year_#{year}/day_#{day_val}.txt"
   end
 end
