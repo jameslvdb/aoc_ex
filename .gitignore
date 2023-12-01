@@ -1,0 +1,4 @@
+.ruby-lsp/
+.elixir_lsp/
+
+.DS_Store
