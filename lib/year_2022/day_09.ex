@@ -11,7 +11,6 @@ defmodule Year2022.Day09 do
         head: %{x: 0, y: 0},
         tail: %{x: 0, y: 0}
       },
-      head_list: [],
       tail_moves: [],
       tail_list: [%{x: 0, y: 0}]
     }
@@ -26,22 +25,91 @@ defmodule Year2022.Day09 do
     |> Enum.count()
   end
 
+  def full_part_2() do
+    InputHelper.input_for(2022, 9)
+    |> String.split("\n")
+    |> part_2()
+  end
+
   def part_2(lines) do
     data = %{
       coords: %{
         head: %{x: 0, y: 0},
         tail: %{x: 0, y: 0}
       },
-      head_list: [],
       tail_moves: [],
       tail_list: [%{x: 0, y: 0}]
     }
 
     head_move_list =
       Enum.map(lines, &line_to_move_list/1)
-      |> Enum.flatten()
+      |> List.flatten()
+
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    head_move_list = Enum.reverse(result.tail_moves)
+    data = reset_data()
+    result = Enum.reduce(head_move_list, data, fn line, acc -> process_move(acc, line) end)
+
+    Enum.uniq(result.tail_list)
+    |> Enum.count()
   end
 
+  defp reset_data() do
+    %{
+      coords: %{
+        head: %{x: 0, y: 0},
+        tail: %{x: 0, y: 0}
+      },
+      tail_moves: [],
+      tail_list: [%{x: 0, y: 0}]
+    }
+  end
+
+  @doc ~S"""
+  Parses the given `line` into a Map representation of a move.
+
+  ## Examples
+
+      iex> Year2022.Day09.line_to_move_list("R 2")
+      [%{x: 1, y: 0}, %{x: 1, y: 0}]
+  """
   def line_to_move_list(line) do
     [direction, steps] = String.split(line)
 
@@ -101,37 +169,58 @@ defmodule Year2022.Day09 do
   def update_tail(data, "L") do
     %{x: head_x, y: head_y} = data.coords.head
     new_tail = %{x: head_x + 1, y: head_y}
+    tail_move = tail_move(data.coords.tail, new_tail)
 
     data = put_in(data.coords.tail, new_tail)
     data = put_in(data.tail_list, [new_tail | data.tail_list])
-    put_in(data.tail_moves, [%{x: -1, y: 0} | data.tail_moves])
+    put_in(data.tail_moves, List.flatten([tail_move | data.tail_moves]))
   end
 
   def update_tail(data, "R") do
     %{x: head_x, y: head_y} = data.coords.head
     new_tail = %{x: head_x - 1, y: head_y}
+    tail_move = tail_move(data.coords.tail, new_tail)
 
     data = put_in(data.coords.tail, new_tail)
     data = put_in(data.tail_list, [new_tail | data.tail_list])
-    put_in(data.tail_moves, [%{x: 1, y: 0} | data.tail_moves])
+    put_in(data.tail_moves, List.flatten([tail_move | data.tail_moves]))
   end
 
   def update_tail(data, "D") do
     %{x: head_x, y: head_y} = data.coords.head
     new_tail = %{x: head_x, y: head_y + 1}
+    tail_move = tail_move(data.coords.tail, new_tail)
 
     data = put_in(data.coords.tail, new_tail)
     data = put_in(data.tail_list, [new_tail | data.tail_list])
-    put_in(data.tail_moves, [%{x: 0, y: -1} | data.tail_moves])
+    put_in(data.tail_moves, List.flatten([tail_move | data.tail_moves]))
   end
 
   def update_tail(data, "U") do
     %{x: head_x, y: head_y} = data.coords.head
     new_tail = %{x: head_x, y: head_y - 1}
+    tail_move = tail_move(data.coords.tail, new_tail)
 
     data = put_in(data.coords.tail, new_tail)
     data = put_in(data.tail_list, [new_tail | data.tail_list])
-    put_in(data.tail_moves, [%{x: 0, y: 1} | data.tail_moves])
+    put_in(data.tail_moves, List.flatten([tail_move | data.tail_moves]))
+  end
+
+  def tail_move(old_tail, new_tail) do
+    x_diff = new_tail.x - old_tail.x
+    y_diff = new_tail.y - old_tail.y
+
+    [%{x: x_diff, y: 0}, %{x: 0, y: y_diff}]
+    |> Enum.reject(fn move -> move.x == 0 && move.y == 0 end)
+    |> List.flatten()
+
+    # generate tail's aggregate move be comparing head and tail
+    # should make sure diagonals are handled
+
+    # head.x = tail.x + 2, head.y = tail.y => %{x: 1, y: 0}
+    # head.x = tail.x - 2, head.y = tail.y => %{x: -1, y: 0}
+    # head.x = tail.x, head.y = tail.y + 2 => %{x: 0, y: 1}
+    # head.x = tail.x, head.y = tail.y - 2 => %{x: 0, y: -1}
   end
 
   def move_tail?(head_coords, tail_coords) do
