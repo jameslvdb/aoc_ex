@@ -2,7 +2,7 @@ require "open-uri"
 require "net/http"
 require "dotenv"
 
-Dotenv.load!(".env")["SESSION_TOKEN"]
+Dotenv.load!(".env")
 # Example link:
 # https://adventofcode.com/2022/day/1/input
 

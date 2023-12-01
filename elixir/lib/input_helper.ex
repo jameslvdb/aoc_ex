@@ -11,6 +11,14 @@ defmodule InputHelper do
     String.trim(input)
   end
 
+  def example_input_for(year, day, part) do
+    {:ok, input} =
+      example_file_name(year, day, part)
+      |> File.read()
+
+    String.trim(input)
+  end
+
   defp constructed_file_name(year, day) do
     day_val =
       day
@@ -18,5 +26,19 @@ defmodule InputHelper do
       |> String.pad_leading(2, "0")
 
     "../inputs/year_#{year}/day_#{day_val}.txt"
+  end
+
+  defp example_file_name(year, day, part) do
+    day_val =
+      day
+      |> Integer.to_string()
+      |> String.pad_leading(2, "0")
+
+    part_val =
+      part
+      |> Integer.to_string()
+      |> String.pad_leading(2, "0")
+
+    "../inputs/year_#{year}/day_#{day_val}_part_#{part_val}_example.txt"
   end
 end
