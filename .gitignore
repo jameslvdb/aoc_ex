@@ -2,3 +2,5 @@
 .elixir_lsp/
 
 .DS_Store
+
+.env
