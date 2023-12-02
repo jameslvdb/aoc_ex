@@ -6,10 +6,10 @@ defmodule Year2023.Day02 do
   def full_part_1() do
     InputHelper.input_for(2023, 2)
     |> String.split("\n")
-    |> process_games()
+    |> part_1()
   end
 
-  def process_games(lines) do
+  def part_1(lines) do
     Enum.reduce(lines, 0, fn line, acc ->
       acc + process_game(line)
     end)

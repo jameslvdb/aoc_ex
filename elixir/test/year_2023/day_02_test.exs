@@ -8,7 +8,7 @@ defmodule Year2023.Day02Test do
         InputHelper.example_input_for(2023, 2, 1)
         |> String.split("\n")
 
-      assert Day02.process_games(lines) == 8
+      assert Day02.part_1(lines) == 8
     end
   end
 
