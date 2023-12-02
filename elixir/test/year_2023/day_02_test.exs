@@ -4,6 +4,11 @@ defmodule Year2023.Day02Test do
 
   describe "example cases" do
     test "it should return the correct result for the example" do
+      lines =
+        InputHelper.example_input_for(2023, 2, 1)
+        |> String.split("\n")
+
+      assert Day02.process_games(lines) == 8
     end
   end
 
@@ -27,10 +32,10 @@ defmodule Year2023.Day02Test do
 
   test "it should process the game into a list of draws" do
     valid_game = "Game 1: 1 blue, 3 green; 3 red, 6 green"
-    assert Day02.process_game(valid_game) == true
+    assert Day02.process_game(valid_game) == 1
 
     invalid_game = "Game 2: 50 blue, 3 red; 3 blue, 6 green"
-    assert Day02.process_game(invalid_game) == false
+    assert Day02.process_game(invalid_game) == 0
   end
 
   test "it should validate a draw from a string" do

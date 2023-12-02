@@ -1,21 +1,31 @@
 defmodule Year2023.Day02 do
-  # def full_part_1() do
-  #   InputHelper.input_for(2023, 2)
-  #   |> String.split("\n")
-  #   |> part_1()
-  # end
   @max_red_cubes 12
   @max_green_cubes 13
   @max_blue_cubes 14
 
+  def full_part_1() do
+    InputHelper.input_for(2023, 2)
+    |> String.split("\n")
+    |> process_games()
+  end
+
+  def process_games(lines) do
+    Enum.reduce(lines, 0, fn line, acc ->
+      acc + process_game(line)
+    end)
+  end
+
   def process_game(line) do
     game_id = game_id(line)
 
-    trim_game_id(line)
-    |> split_draws()
-    |> Enum.flat_map(&split_colors(&1))
-    |> Enum.map(&validate_draw(&1))
-    |> Enum.all?()
+    valid_game? =
+      trim_game_id(line)
+      |> split_draws()
+      |> Enum.flat_map(&split_colors(&1))
+      |> Enum.map(&validate_draw(&1))
+      |> Enum.all?()
+
+    if valid_game?, do: game_id, else: 0
   end
 
   def validate_draw(draw) do
