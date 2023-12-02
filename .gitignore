@@ -1,5 +1,6 @@
 .ruby-lsp/
 .elixir_lsp/
+.vscode/
 
 .DS_Store
 
