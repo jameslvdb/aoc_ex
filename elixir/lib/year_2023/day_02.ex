@@ -15,6 +15,26 @@ defmodule Year2023.Day02 do
     end)
   end
 
+  def full_part_2() do
+    InputHelper.input_for(2023, 2)
+    |> String.split("\n")
+    |> part_2()
+  end
+
+  def part_2(lines) do
+    Enum.map(lines, &trim_game_id/1)
+    |> Enum.map(&split_draws/1)
+    |> Enum.map(&process_products/1)
+    |> Enum.map(&group_draws_by_color/1)
+    |> Enum.map(&lowest_possible_cubes/1)
+    |> Enum.map(&cube_product/1)
+    |> Enum.sum()
+  end
+
+  def process_products(draws) do
+    Enum.flat_map(draws, &split_colors/1)
+  end
+
   def process_game(line) do
     game_id = game_id(line)
 
@@ -62,5 +82,37 @@ defmodule Year2023.Day02 do
 
   def split_colors(str) do
     String.split(str, ", ")
+  end
+
+  def group_draws_by_color(draws) do
+    Enum.group_by(draws, fn draw -> String.split(draw) |> List.last() end)
+  end
+
+  def lowest_possible_cubes(%{"blue" => blue_draws, "red" => red_draws, "green" => green_draws}) do
+    min_blues =
+      sort_draws(blue_draws)
+      |> Enum.max()
+
+    min_reds =
+      sort_draws(red_draws)
+      |> Enum.max()
+
+    min_greens =
+      sort_draws(green_draws)
+      |> Enum.max()
+
+    %{blue: min_blues, red: min_reds, green: min_greens}
+  end
+
+  def cube_product(cubes) do
+    Map.values(cubes)
+    |> Enum.product()
+  end
+
+  def sort_draws(draws) do
+    Enum.map(draws, &String.split(&1))
+    |> Enum.map(&List.first/1)
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.sort()
   end
 end
