@@ -39,7 +39,11 @@ defmodule Year2023.Day03 do
   end
 
   def part_2(lines) do
-    nil
+    Enum.map(lines, &find_gears/1)
+    |> Enum.with_index()
+    |> Enum.map(&gear_ratio_per_line(&1, lines))
+    |> List.flatten()
+    |> Enum.sum()
   end
 
   def find_numbers(line) do
@@ -111,5 +115,68 @@ defmodule Year2023.Day03 do
 
   defp find_chars(string, index, length) do
     String.slice(string, index, length + 2)
+  end
+
+  def find_gears(line) do
+    Regex.scan(@gear_regex, line, return: :index)
+  end
+
+  def gear_ratio_per_line({[], _row_index}, _matrix), do: 0
+
+  def gear_ratio_per_line({coords, row_index}, matrix) do
+    Enum.map(coords, fn [{col_index, _length}] ->
+      gear_ratio({row_index, col_index}, matrix)
+    end)
+  end
+
+  def gear_ratio({row_index, column_index}, matrix) do
+    numbers = find_surrounding_numbers({row_index, column_index}, matrix)
+
+    if length(numbers) <= 1,
+      do: 0,
+      else: Enum.product(numbers)
+  end
+
+  def find_surrounding_numbers({row_index, column_index}, matrix) do
+    Enum.concat([
+      numbers_above(row_index, matrix, column_index),
+      numbers_below(row_index, matrix, column_index),
+      numbers_surrounding(row_index, matrix, column_index)
+    ])
+  end
+
+  def numbers_above(row_index, matrix, gear_index) do
+    line = Enum.at(matrix, row_index - 1)
+
+    Regex.scan(@number_regex, line, return: :index)
+    |> Enum.map(fn pair -> is_connected_to_gear(pair, gear_index, line) end)
+    |> Enum.filter(&(!is_nil(&1)))
+  end
+
+  def numbers_below(row_index, matrix, gear_index) do
+    line = Enum.at(matrix, row_index + 1)
+
+    Regex.scan(@number_regex, line, return: :index)
+    |> Enum.map(fn pair -> is_connected_to_gear(pair, gear_index, line) end)
+    |> Enum.filter(&(!is_nil(&1)))
+  end
+
+  def numbers_surrounding(row_index, matrix, gear_index) do
+    line = Enum.at(matrix, row_index)
+
+    Regex.scan(@number_regex, line, return: :index)
+    |> Enum.map(fn pair -> is_connected_to_gear(pair, gear_index, line) end)
+    |> Enum.filter(&(!is_nil(&1)))
+  end
+
+  def is_connected_to_gear([{index, length}], gear_index, line) do
+    is_connected? = gear_index >= index - 1 && gear_index <= index + length
+
+    if is_connected?, do: get_number(line, {index, length}), else: nil
+  end
+
+  defp get_number(line, {index, length}) do
+    String.slice(line, index, length)
+    |> String.to_integer()
   end
 end
