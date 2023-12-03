@@ -1,6 +1,6 @@
 defmodule Year2022.Day11 do
-  def create_monkey(lines) do
-  end
+  # def create_monkey(lines) do
+  # end
 
   def monkey_number(str) do
     Regex.scan(~r/\d+/, str)
@@ -25,19 +25,21 @@ defmodule Year2022.Day11 do
   end
 
   def test_function(str) do
-    divisor = String.split(str)
-    |> List.last()
-    |> String.to_integer()
+    divisor =
+      String.split(str)
+      |> List.last()
+      |> String.to_integer()
 
-    &(rem(&1, divisor))
+    &rem(&1, divisor)
   end
 
   def generate_operation_function(operation, number) do
-	operation_atom = String.to_atom(operation)
+    operation_atom = String.to_atom(operation)
 
     case number do
-	  "old" ->
-		fn x -> apply(Kernel, operation_atom, [x, x]) end
+      "old" ->
+        fn x -> apply(Kernel, operation_atom, [x, x]) end
+
       _ ->
         fn x -> apply(Kernel, operation_atom, [x, String.to_integer(number)]) end
     end

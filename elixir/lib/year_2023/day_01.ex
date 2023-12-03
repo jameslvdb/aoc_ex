@@ -33,9 +33,8 @@ defmodule Year2023.Day01 do
     [first | rest] = line
     last = Enum.reverse(rest)
 
-    result =
-      (first <> Enum.at(last, 0))
-      |> String.to_integer()
+    (first <> Enum.at(last, 0))
+    |> String.to_integer()
   end
 
   def numbers_in_line(line, :p1) do
