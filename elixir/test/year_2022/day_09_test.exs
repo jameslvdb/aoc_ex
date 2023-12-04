@@ -32,7 +32,7 @@ defmodule Year2022.Day09Test do
     ]
 
     Day09.part_2(input)
-    |> dbg()
+    # |> dbg()
   end
 
   describe "part 2" do

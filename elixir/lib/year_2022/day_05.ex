@@ -69,7 +69,7 @@ defmodule Year2022.Day05 do
   end
 
   def build_move(line) do
-    IO.puts("Line: #{line}")
+    # IO.puts("Line: #{line}")
 
     [count, from, to] =
       Regex.scan(~r/\d+/, line)

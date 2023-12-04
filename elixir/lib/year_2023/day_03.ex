@@ -10,7 +10,6 @@ defmodule Year2023.Day03 do
   end
 
   def part_1(lines) do
-    sum_of_numbers = 0
     number_indices = Enum.map(lines, &find_numbers/1)
 
     # Format is:

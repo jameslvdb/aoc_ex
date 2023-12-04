@@ -4,9 +4,11 @@ defmodule Year2022.Day11Test do
 
   test "it can parse one monkey's attributes" do
     input = test_input()
+
     String.split(input, "\n")
     |> Enum.map(&String.trim/1)
-    |> Enum.map(fn x -> IO.puts("\"#{x}\"") end)
+
+    # |> Enum.map(fn x -> IO.puts("\"#{x}\"") end)
   end
 
   test "it parses a monkey number" do

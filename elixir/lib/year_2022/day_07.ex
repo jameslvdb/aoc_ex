@@ -99,7 +99,8 @@ defmodule Year2022.Day07 do
     |> Enum.reject(fn x -> x > 100_000 end)
     |> Enum.sort()
     |> Enum.sum()
-    |> dbg()
+
+    # |> dbg()
   end
 
   def add_current_dir_to_lines(lines) do

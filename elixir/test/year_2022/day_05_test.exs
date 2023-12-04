@@ -44,11 +44,13 @@ defmodule Year2022.Day05Test do
 
     parsed_moves =
       Enum.map(moves, &Day05.build_move/1)
-      |> dbg()
+
+    # |> dbg()
 
     Enum.reduce(parsed_moves, stacks, fn move, acc -> Day05.perform_move(move, acc) end)
     |> Enum.map(&hd/1)
     |> Enum.join()
-    |> dbg()
+
+    # |> dbg()
   end
 end

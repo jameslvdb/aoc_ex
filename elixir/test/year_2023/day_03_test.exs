@@ -47,7 +47,7 @@ defmodule Year2023.Day03Test do
       Enum.map(matrix_with_symbol, &Day03.find_numbers/1)
       |> Enum.with_index()
 
-    IO.inspect(Enum.map(indices_with_index, &Day03.check_line(&1, matrix_with_symbol)))
+    # IO.inspect(Enum.map(indices_with_index, &Day03.check_line(&1, matrix_with_symbol)))
   end
 
   test "surrounding_chars" do
