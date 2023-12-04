@@ -85,8 +85,7 @@ defmodule Year2022.Day09Test do
          },
          tail_moves: [],
          tail_list: [%{x: 0, y: 0}]
-       },
-      }
+       }}
     end
 
     @tag :skip
