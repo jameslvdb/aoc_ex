@@ -33,7 +33,7 @@ defmodule Year2023.Day01 do
     [first | rest] = line
     last = Enum.reverse(rest)
 
-    (first <> Enum.at(last, 0))
+    (first <> hd(last))
     |> String.to_integer()
   end
 
@@ -50,7 +50,7 @@ defmodule Year2023.Day01 do
     regex = ~r/\d|one|two|three|four|five|six|seven|eight|nine|zero/
 
     Regex.run(regex, str)
-    |> Enum.at(0)
+    |> hd()
     |> string_to_number()
   end
 
@@ -58,7 +58,7 @@ defmodule Year2023.Day01 do
     regex = ~r/\d|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin|orez/
 
     Regex.run(regex, String.reverse(str))
-    |> Enum.at(0)
+    |> hd()
     |> String.reverse()
     |> string_to_number()
   end
