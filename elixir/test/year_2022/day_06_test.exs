@@ -15,7 +15,7 @@ defmodule Year2022.Day06Test do
   end
 
   test "full part 1" do
-    File.read!("inputs/year_2022/day_06.txt")
+    File.read!("../inputs/year_2022/day_06.txt")
     |> Day06.part_1()
   end
 
@@ -34,7 +34,7 @@ defmodule Year2022.Day06Test do
   end
 
   test "full part 2" do
-    File.read!("inputs/year_2022/day_06.txt")
+    File.read!("../inputs/year_2022/day_06.txt")
     |> Day06.part_2()
   end
 end
