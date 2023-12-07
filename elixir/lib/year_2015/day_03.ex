@@ -1,41 +1,49 @@
 defmodule Year2015.Day03 do
   def part_1() do
-    houses = %{
-      {0, 0} => 1
+    state = %{
+      houses: %{
+        {0, 0} => 1
+      },
+      position: {0, 0}
     }
 
-    position = {0, 0}
+    final_state =
+      InputHelper.input_for(2015, 3)
+      |> parse_input()
+      |> Enum.reduce(state, fn move, state -> process_move(move, state) end)
 
-    InputHelper.input_for(2015, 3)
-    |> parse_input()
-    |> Enum.reduce(houses, fn move, houses -> process_move(move, houses, position) end)
+    Enum.count(final_state.houses)
   end
 
   defp parse_input(input) do
     String.graphemes(input)
   end
 
-  def process_move("^", houses, {x, y}) do
-    new_pos = {x, y + 1}
+  def process_move(move, state) do
+    # destructure (with pattern matching)
+    %{houses: houses, position: {x, y}} = state
 
-    Map.update(houses, new_pos, 1, fn x -> x + 1 end)
+    case move do
+      "^" ->
+        new_pos = {x, y + 1}
+        update_state(new_pos, state)
+
+      "v" ->
+        new_pos = {x, y - 1}
+        update_state(new_pos, state)
+
+      ">" ->
+        new_pos = {x + 1, y}
+        update_state(new_pos, state)
+
+      "<" ->
+        new_pos = {x - 1, y}
+        update_state(new_pos, state)
+    end
   end
 
-  def process_move("v", houses, {x, y}) do
-    new_pos = {x, y - 1}
-
-    Map.update(houses, new_pos, 1, fn x -> x + 1 end)
-  end
-
-  def process_move(">", houses, {x, y}) do
-    new_pos = {x + 1, y}
-
-    Map.update(houses, new_pos, 1, fn x -> x + 1 end)
-  end
-
-  def process_move("<", houses, {x, y}) do
-    new_pos = {x - 1, y}
-
-    Map.update(houses, new_pos, 1, fn x -> x + 1 end)
+  def update_state(pos, state) do
+    Map.put(state, :position, pos)
+    |> Map.put(:houses, Map.update(state.houses, pos, 1, &(&1 + 1)))
   end
 end
