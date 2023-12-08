@@ -21,7 +21,7 @@ defmodule Year2015.Day03 do
 
   def process_move(move, state) do
     # destructure (with pattern matching)
-    %{houses: houses, position: {x, y}} = state
+    %{houses: _houses, position: {x, y}} = state
 
     case move do
       "^" ->
