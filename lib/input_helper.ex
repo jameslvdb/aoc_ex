@@ -25,7 +25,7 @@ defmodule InputHelper do
       |> Integer.to_string()
       |> String.pad_leading(2, "0")
 
-    "../inputs/year_#{year}/day_#{day_val}.txt"
+    "inputs/year_#{year}/day_#{day_val}.txt"
   end
 
   defp example_file_name(year, day, part) do
@@ -39,6 +39,6 @@ defmodule InputHelper do
       |> Integer.to_string()
       |> String.pad_leading(2, "0")
 
-    "../inputs/year_#{year}/day_#{day_val}_part_#{part_val}_example.txt"
+    "inputs/year_#{year}/day_#{day_val}_part_#{part_val}_example.txt"
   end
 end
