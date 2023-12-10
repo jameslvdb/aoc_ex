@@ -1,7 +1,22 @@
-.ruby-lsp/
-.elixir_lsp/
 .vscode/
-
 .DS_Store
-
 .env
+
+# Created by https://www.toptal.com/developers/gitignore/api/elixir
+# Edit at https://www.toptal.com/developers/gitignore?templates=elixir
+
+### Elixir ###
+/_build
+/cover
+/deps
+/doc
+/.fetch
+erl_crash.dump
+*.ez
+*.beam
+/config/*.secret.exs
+.elixir_ls/
+
+### Elixir Patch ###
+
+# End of https://www.toptal.com/developers/gitignore/api/elixir
