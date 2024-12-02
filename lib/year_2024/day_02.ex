@@ -39,7 +39,6 @@ defmodule Year2024.Day02 do
 
   def is_report_safe?(report) do
     Enum.all?([
-      contains_no_zeros?(report),
       all_steps_positive?(report) || all_steps_negative?(report),
       all_steps_less_than_3?(report)
     ])
@@ -49,10 +48,6 @@ defmodule Year2024.Day02 do
     report
     |> Enum.chunk_every(2, 1, :discard)
     |> Enum.map(fn [x, y] -> x - y end)
-  end
-
-  defp contains_no_zeros?(list) do
-    !Enum.member?(list, 0)
   end
 
   defp all_steps_positive?(list) do
