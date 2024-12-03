@@ -25,7 +25,8 @@ defmodule Year2024.Day02 do
         |> Enum.any?(&is_report_safe?/1)
       end
     end)
-    |> Enum.count(fn x -> x == true end)
+    |> Enum.filter(fn x -> x end)
+    |> Enum.count()
   end
 
   def process_input(input) do
