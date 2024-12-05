@@ -65,7 +65,7 @@ defmodule Year2024.Day02 do
   end
 
   def report_permutations(report) do
-    Enum.reduce_while(report, {0, []}, fn x, {index, permutations} ->
+    Enum.reduce_while(report, {0, []}, fn _x, {index, permutations} ->
       if index == Enum.count(report) do
         {:halt, permutations}
       else

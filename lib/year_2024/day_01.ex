@@ -1,13 +1,4 @@
 defmodule Year2024.Day01 do
-  part_1_example_input = """
-  3   4
-  4   3
-  2   5
-  1   3
-  3   9
-  3   3
-  """
-
   def setup(lines) do
     left =
       Enum.take_every(lines, 2)
