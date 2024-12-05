@@ -25,8 +25,71 @@ defmodule Year2024.Day04 do
     |> Enum.count(&(&1 == true))
   end
 
-  def part_2(_input) do
-    nil
+  @doc """
+  Needs to find the instances of `MAS` in an `X` shape in the grid, with A at the center.
+
+  `MAS` can appear in four different directions:
+
+  Southeast
+  M . .
+  . A .
+  . . S
+
+  Southwest
+  . . M
+  . A .
+  S . .
+
+  Northeast
+  . . S
+  . A .
+  M . .
+
+  Northwest
+  S . .
+  . A .
+  . . M
+
+  This means that there are 4 different combinations of `MAS` that can appear in the grid:
+
+  - southeast and southwest
+  M . M
+  . A .
+  S . S
+
+  - northeast and northwest
+  S . S
+  . A .
+  M . M
+
+  - southeast and northeast
+  M . S
+  . A .
+  M . S
+
+  - southwest and northwest
+  S . M
+  . A .
+  S . M
+  """
+  def part_2(input) do
+    coordinates_by_letter =
+      input
+      |> to_matrix()
+      |> build_coordinates()
+
+    locations_to_check = build_cross_permutations(coordinates_by_letter[:A])
+
+    Enum.map(locations_to_check, fn a_location ->
+      Enum.map(a_location, fn %{M: [m_pair_1, m_pair_2], S: [s_pair_1, s_pair_2]} ->
+        m_pair_1 in coordinates_by_letter[:M] &&
+          m_pair_2 in coordinates_by_letter[:M] &&
+          s_pair_1 in coordinates_by_letter[:S] &&
+          s_pair_2 in coordinates_by_letter[:S]
+      end)
+    end)
+    |> List.flatten()
+    |> Enum.count(&(&1 == true))
   end
 
   def to_matrix(raw_input) do
@@ -54,14 +117,6 @@ defmodule Year2024.Day04 do
 
   def find_possible_locations(coordinates) do
     %{X: x_coords, M: _m_coords, A: _a_coords, S: _s_coords} = coordinates
-
-    _example_grid = [
-      [1, 2, 3, 4, 5],
-      [2, 3, 1, 5, 4],
-      [3, 1, 2, 4, 5],
-      [4, 5, 3, 1, 2],
-      [5, 4, 2, 3, 1]
-    ]
 
     Enum.map(x_coords, fn {row, col} ->
       functions = [
@@ -140,6 +195,71 @@ defmodule Year2024.Day04 do
       M: {row + 1, col - 1},
       A: {row + 2, col - 2},
       S: {row + 3, col - 3}
+    }
+  end
+
+  def build_cross_permutations(a_coords) do
+    functions = [
+      &southeast_and_southwest/1,
+      &northeast_and_northwest/1,
+      &southeast_and_northeast/1,
+      &southwest_and_northwest/1
+    ]
+
+    Enum.map(a_coords, fn {row, col} ->
+      Enum.map(functions, fn f -> f.({row, col}) end)
+    end)
+  end
+
+  defp southeast_and_southwest({row, col}) do
+    %{
+      M: [
+        {row - 1, col + 1},
+        {row - 1, col - 1}
+      ],
+      S: [
+        {row + 1, col + 1},
+        {row + 1, col - 1}
+      ]
+    }
+  end
+
+  defp northeast_and_northwest({row, col}) do
+    %{
+      M: [
+        {row + 1, col + 1},
+        {row + 1, col - 1}
+      ],
+      S: [
+        {row - 1, col + 1},
+        {row - 1, col - 1}
+      ]
+    }
+  end
+
+  defp southeast_and_northeast({row, col}) do
+    %{
+      M: [
+        {row - 1, col - 1},
+        {row + 1, col - 1}
+      ],
+      S: [
+        {row - 1, col + 1},
+        {row + 1, col + 1}
+      ]
+    }
+  end
+
+  defp southwest_and_northwest({row, col}) do
+    %{
+      S: [
+        {row - 1, col - 1},
+        {row + 1, col - 1}
+      ],
+      M: [
+        {row - 1, col + 1},
+        {row + 1, col + 1}
+      ]
     }
   end
 end
