@@ -2,7 +2,7 @@ defmodule Year2024.Day05 do
   def solve() do
     input = InputHelper.input_for(2024, 5)
     IO.puts("Part 1: #{part_1(input)}")
-    IO.puts("Part 2: #{part_2()}")
+    IO.puts("Part 2: #{part_2(input)}")
   end
 
   def setup(raw_input) do
@@ -41,8 +41,17 @@ defmodule Year2024.Day05 do
     |> Enum.sum()
   end
 
-  def part_2() do
-    nil
+  def part_2(input) do
+    {ordering_rules, updates} =
+      input
+      |> setup()
+
+    Enum.reject(updates, fn update ->
+      valid_update?(update, ordering_rules)
+    end)
+    |> Enum.map(&fix_ordering(&1, ordering_rules))
+    |> Enum.map(&middle_number/1)
+    |> Enum.sum()
   end
 
   def valid_update?(update, page_rules) do
@@ -72,6 +81,12 @@ defmodule Year2024.Day05 do
       [y, x] in page_rules -> false
       true -> true
     end
+  end
+
+  def fix_ordering(update, sorting_rules) do
+    Enum.sort(update, fn x, y ->
+      sorting_function(sorting_rules, [x, y])
+    end)
   end
 
   def middle_number(list) do
