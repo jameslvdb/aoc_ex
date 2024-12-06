@@ -4,7 +4,7 @@ defmodule Year2023.Day11 do
   end
 
   defp parse_input(input) do
-    lines = String.split("\n")
+    lines = String.split(input, "\n")
 
     Enum.map(lines, fn line ->
       String.graphemes(line)

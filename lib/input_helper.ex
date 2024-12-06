@@ -19,6 +19,12 @@ defmodule InputHelper do
     String.trim(input)
   end
 
+  # def fetch_file(year, day) do
+  #   # pull the session token from .env
+
+  #   # make an HTTP request using the token to get the input for the specified day
+  # end
+
   defp constructed_file_name(year, day) do
     day_val =
       day

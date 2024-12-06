@@ -37,10 +37,6 @@ defmodule Year2015.Day03 do
     |> Enum.count()
   end
 
-  defp parse_input(input) do
-    String.graphemes(input)
-  end
-
   def process_move(move, state) do
     # destructure (with pattern matching)
     %{houses: _houses, position: {x, y}} = state

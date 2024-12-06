@@ -27,7 +27,7 @@ defmodule Year2023.Day10 do
   end
 
   def connected_pipes(map, position) do
-    set = MapSet.new()
+    _set = MapSet.new()
 
     pipe_at_position = Map.get(map, position)
 
