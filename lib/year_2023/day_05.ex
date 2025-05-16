@@ -310,32 +310,32 @@ defmodule Year2023.Day05 do
 
   def split_range(range, source)
 
-  def split_range(range_start.._range_end = range, _source_start..source_end)
+  def split_range(range_start.._range_end//range, _source_start..source_end//_source)
       when source_end < range_start do
     {nil, [range]}
   end
 
-  def split_range(_range_start..range_end = range, source_start.._source_end)
+  def split_range(_range_start..range_end//range, source_start.._source_end//_source)
       when source_start > range_end do
     {nil, [range]}
   end
 
-  def split_range(range_start..range_end = range, source_start..source_end)
+  def split_range(range_start..range_end//range, source_start..source_end//_source)
       when source_start <= range_start and source_end >= range_end do
     {[range], nil}
   end
 
-  def split_range(range_start..range_end, source_start..source_end)
+  def split_range(range_start..range_end//_range, source_start..source_end//_source)
       when source_start >= range_start and source_end >= range_end do
     {[source_start..range_end], [range_start..(source_start - 1)]}
   end
 
-  def split_range(range_start..range_end, source_start..source_end)
+  def split_range(range_start..range_end//_range, source_start..source_end//_source)
       when source_start <= range_start and source_end <= range_end do
     {[range_start..source_end], [(source_end + 1)..range_end]}
   end
 
-  def split_range(range_start..range_end, source_start..source_end)
+  def split_range(range_start..range_end//_range, source_start..source_end//_source)
       when source_start >= range_start and source_end <= range_end do
     {[source_start..source_end], [range_start..(source_start - 1), (source_end + 1)..range_end]}
   end
