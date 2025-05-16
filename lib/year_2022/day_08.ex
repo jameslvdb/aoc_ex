@@ -92,7 +92,7 @@ defmodule Year2022.Day08 do
   end
 
   defp transpose(matrix) do
-    List.zip(matrix)
+    Enum.zip(matrix)
     |> Enum.map(&Tuple.to_list/1)
   end
 
