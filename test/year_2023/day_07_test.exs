@@ -4,7 +4,7 @@ defmodule Year2023.Day07Test do
 
   @card_order ~w(2 3 4 5 6 7 8 9 T J Q K A)
 
-  @joker_card_order ~w(J 2 3 4 5 6 7 8 9 T Q K A)
+  # @joker_card_order ~w(J 2 3 4 5 6 7 8 9 T Q K A)
 
   @tag :skip
   test "part 1 example" do

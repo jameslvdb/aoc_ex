@@ -1,7 +1,7 @@
 defmodule Year2015.Day03Test do
   alias Year2015.Day03
   use ExUnit.Case
-  use ExUnit.Callbacks
+  # use ExUnit.Callbacks
 
   test "update_state" do
     state = %{
@@ -10,6 +10,11 @@ defmodule Year2015.Day03Test do
       },
       position: {0, 0}
     }
+
+    assert state == %{
+             houses: %{{0, 0} => 1},
+             position: {0, 0}
+           }
 
     assert Day03.update_state({0, 0}, state).position == {0, 0}
     assert Day03.update_state({0, 0}, state).houses == %{{0, 0} => 2}
@@ -41,7 +46,7 @@ defmodule Year2015.Day03Test do
     end
   end
 
-  defp setup_state(context) do
+  defp setup_state(_context) do
     %{
       state: %{
         houses: %{

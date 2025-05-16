@@ -37,15 +37,15 @@ defmodule Year2023.Day03Test do
 
   @tag :skip
   test "check_line" do
-    matrix_with_symbol = [
-      "..*",
-      ".9.",
-      "..."
-    ]
+    # matrix_with_symbol = [
+    #   "..*",
+    #   ".9.",
+    #   "..."
+    # ]
 
-    indices_with_index =
-      Enum.map(matrix_with_symbol, &Day03.find_numbers/1)
-      |> Enum.with_index()
+    # indices_with_index =
+    #   Enum.map(matrix_with_symbol, &Day03.find_numbers/1)
+    #   |> Enum.with_index()
 
     # IO.inspect(Enum.map(indices_with_index, &Day03.check_line(&1, matrix_with_symbol)))
   end

@@ -65,5 +65,7 @@ defmodule Year2022.Day11Test do
         If true: throw to monkey 0
         If false: throw to monkey 1
     """
+
+    input
   end
 end

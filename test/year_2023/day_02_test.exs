@@ -47,7 +47,7 @@ defmodule Year2023.Day02Test do
   end
 
   test "it should validate a draw from a string" do
-    game = "5 blue"
+    # game = "5 blue"
     assert Day02.validate_draw("5 blue") == true
     assert Day02.validate_draw("18 blue") == false
   end
