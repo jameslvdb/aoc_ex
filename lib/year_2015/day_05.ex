@@ -12,7 +12,10 @@ defmodule Year2015.Day05 do
   end
 
   def part_2() do
-    nil
+    InputHelper.input_for(2015, 5)
+    |> String.split("\n", trim: true)
+    |> Enum.filter(&is_nice_p2?/1)
+    |> Enum.count()
   end
 
   def is_nice_p1?(s) do
@@ -35,5 +38,17 @@ defmodule Year2015.Day05 do
   def has_no_banned_substrings?(s) do
     banned_substrings = ~w(ab cd pq xy)
     !String.contains?(s, banned_substrings)
+  end
+
+  def repeated_pair?(s) do
+    Regex.match?(~r/(..).*\1/, s)
+  end
+
+  def has_letter_sandwich?(s) do
+    Regex.match?(~r/(.).\1/, s)
+  end
+
+  def is_nice_p2?(s) do
+    has_letter_sandwich?(s) && repeated_pair?(s)
   end
 end
